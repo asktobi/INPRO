@@ -1,0 +1,35 @@
+
+
+
+
+
+
+task main()
+
+{
+    int sensor_1 = 0;
+    int sensor_2 = 0;
+    string sensor_text_1;
+    string sensor_text_2;
+    
+    SetSensorType(IN_1, IN_TYPE_LIGHT_ACTIVE);
+    SetSensorMode(IN_1, SENSOR_MODE_RAW);
+
+    SetSensorType(IN_4, IN_TYPE_LIGHT_ACTIVE);
+    SetSensorMode(IN_4, SENSOR_MODE_RAW);
+    
+    while(TRUE)
+    {
+      sensor_1 = SensorRaw(IN_1);
+      sensor_2 = SensorRaw(IN_4);
+
+      sensor_text_1 = NumToStr(sensor_1);
+      sensor_text_2 = NumToStr(sensor_2);
+      
+      TextOut(10,LCD_LINE2,sensor_text_1);
+      TextOut(10,LCD_LINE3,sensor_text_2);
+    }
+    
+}
+
+

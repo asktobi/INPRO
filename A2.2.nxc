@@ -1,140 +1,65 @@
 void drive(int time, int speed)
 
-
-
 {
 
-
-
       if (speed > 0)
-
       {
-
         OnFwd(OUT_C, speed);
-
         OnFwd(OUT_A, speed);
 
-
-
         Wait(time);
-
-
 
         Off(OUT_AC);
 
-
-
         Wait(250);
-
-
 
       } else if (speed < 0)
-
       {
-
         speed *= -1;
-
         OnRev(OUT_C, speed);
-
         OnRev(OUT_A, speed);
-
-
 
         Wait(time);
 
-
-
         Off(OUT_AC);
-
-
 
         Wait(250);
 
-
-
       }
-
 }
-
-
-
-
 
 
 
 void turn(int time, int speed)
 
-
-
 {
 
-
-
-      int hw_tolerance = 1;
-
-
-
       if (speed > 0)
-
       {
-
         OnFwd(OUT_C, speed);
-
-        OnRev(OUT_A, speed - hw_tolerance);
-
-
+        OnRev(OUT_A, speed);
 
         Wait(time);
 
-
-
         Off(OUT_AC);
 
-
-
         Wait(250);
-
-
 
       } else if (speed < 0)
-
       {
-
         speed *= -1;
-
         OnRev(OUT_C, speed);
-
-        OnFwd(OUT_A, speed - hw_tolerance);
-
-
+        OnFwd(OUT_A, speed);
 
         Wait(time);
 
-
-
         Off(OUT_AC);
 
-
-
         Wait(250);
-
-
 
       }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -146,43 +71,22 @@ void turn(int time, int speed)
 
 task main()
 
+{
+    int sensor_in = 0;
+    string txt_out;
 
-
- {
-
-
-
-      int i,j,speed = 75;
-
-      int timedturn = 400;
-
-      int timeddistance = 1000;
-
-
-
-
-
-
-
-      for(i = 0; i < 3; i++)
-
-
-
-      {
-
-        for (j = 0; j < 4; j++)
-
-        {
-
-          drive(timeddistance, speed);
-
-          turn(timedturn, speed);
-
-        }
-
-        timeddistance *= 2;
-
-      }
-
+    SetSensorType(IN_1, IN_TYPE_LIGHT_ACTIVE);
+    SetSensorMode(IN_1, SENSOR_MODE_RAW);
+    
+    while(TRUE)
+    {
+      sensor_in = SensorRaw(IN_1);
+      txt_out = NumToStr(sensor_in);
+      TextOut(0,LCD_LINE2,txt_out);
+      Wait(200);
+      TextOut(0,LCD_LINE2,"        "); //Clearing the Line to remove artifacts
+    }
+    
 }
+
 

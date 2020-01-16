@@ -1,0 +1,65 @@
+
+int sensor_1_trigger = 500;
+int sensor_2_trigger = 500;
+
+int speed_normal = 75;
+int speed_slowed = 50;
+
+
+
+
+
+task main()
+
+{
+    int sensor_1 = 0;
+    int sensor_2 = 0;
+    string sensor_text_1;
+    string sensor_text_2;
+    
+    SetSensorType(IN_1, IN_TYPE_LIGHT_ACTIVE);
+    SetSensorMode(IN_1, SENSOR_MODE_RAW);
+
+    SetSensorType(IN_4, IN_TYPE_LIGHT_ACTIVE);
+    SetSensorMode(IN_4, SENSOR_MODE_RAW);
+    
+    OnFwd(OUT_C, speed_normal);
+    OnFwd(OUT_A, speed_normal);
+
+    while(TRUE)
+    {
+      sensor_1 = SensorRaw(IN_1);
+      sensor_2 = SensorRaw(IN_4);
+
+      sensor_text_1 = NumToStr(sensor_1);
+      sensor_text_2 = NumToStr(sensor_2);
+      
+      if (sensor_1 > sensor_1_trigger )
+      {
+        
+	OnFwd(OUT_C, speed_slowed);
+
+      } else {
+
+        OnFwd(OUT_C, speed_normal);
+
+      }
+
+      if (sensor_2 > sensor_2_trigger )
+      {
+
+        OnFwd(OUT_A, speed_slowed);
+      
+      } else {
+
+        OnFwd(OUT_A, speed_normal);
+
+      }
+
+      TextOut(10,LCD_LINE2,sensor_text_1);
+      TextOut(10,LCD_LINE3,sensor_text_2);
+    }
+    
+}
+
+
